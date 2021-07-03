@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import Btn from './Btn'
 
 
-const Header = ({title}) => {
+const Header = ({toggleShowAdd}) => {
 
     const onClick = () => {
-
+        toggleShowAdd()
     }
 
     return (

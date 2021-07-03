@@ -1,5 +1,6 @@
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
 import {useState} from 'react'
 
 
@@ -26,10 +27,39 @@ function App() {
     },
 ])
 
+  //show add menu
+  const [showAdd, setShowAdd] = useState(false)
+
+  //toggle showAdd
+  const toggleShowAdd = () => {
+    setShowAdd(!showAdd)
+  }
+
+  //remove task
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => { return task.id !== id}))
+  }
+  //create task
+  const createTask = (task) =>{
+    const id = Math.floor(Math.randeom * 100000000)+1
+    const newTask = {id, ...task}
+    console.log(newTask)
+    setTasks([...tasks,newTask])
+  }
+  //toggle reminder
+  const toggleReminder = (id) => {
+    setTasks(tasks.map((task) => {return task.id === id ? {...task ,reminder: !task.reminder}:task}))
+    }
+
   return (
     <div style={mainBoxStyle}>
-      <Header ></Header>
-      <Tasks tasks = {tasks}></Tasks>
+      <Header toggleShowAdd = {toggleShowAdd}></Header>
+      {showAdd && <AddTask onAdd = {createTask}></AddTask>}
+      <Tasks
+        tasks = {tasks}
+        onDelete = {deleteTask}
+        onToggle = {toggleReminder}
+      ></Tasks>
     </div>
   )
 }
@@ -38,8 +68,9 @@ const mainBoxStyle = {
   fontFamily: "consolas",
   color: '#4C5270',
   width: '400px',
-  height: '300px',
+  minHeight:' 300px',
   //border : 'solid #36EEE0 2px',
+  overflow: 'auto',
   margin: '10% auto auto auto',
   borderRadius: '30px',
   padding: '50px',
